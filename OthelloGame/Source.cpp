@@ -47,7 +47,7 @@ int Date[7];//裏返しの判定材料 自分がいる情報は無視
 static int sub_count = 0; //関数の呼び出し回数
 static int y, x;//座標
 
-int turn = WHITE;			//1が先手、2が後手 
+int turn = BLACK;			//1が先手、2が後手 
 int Player1, Player2;//プレイヤー
 
 void Disp(void); //画面の更新・駒数の再描画
@@ -118,6 +118,12 @@ void CanPut() {
 		printf("場所を選択して下さい\n");
 		printf("例 40 + 2 -> 42\n");
 		printf("---------------------------\n");
+		if (turn == BLACK) {
+			printf("黒の番です\n");
+		}
+		else {
+			printf("白の番です\n");
+		}
 		printf("場所:");
 	}
 	else {
@@ -157,7 +163,14 @@ void CanPut() {
 		//1:上ok
 		j = y - 1;
 		for (int i = 0; i <= j; i++) {
-			Date[i] = board[--y][x];
+			if (board[--y][x]) {
+				Date[i] = board[y][x];
+			}
+			else {
+				Date[i] = 0;
+				break;
+			}
+			
 		}
 		TurnOver(Date,place,j);
 		//2:右上
@@ -252,7 +265,7 @@ void TurnOver(int Date[7],int place, int j){
 
 
 
-		//int judge;//裏返せるかの判定
+	//何回裏返せるかの判定
 	if (Date[0] <= 0 || Date[0] == turn) {
 		printf("返せない\n\n");
 	}
@@ -261,7 +274,7 @@ void TurnOver(int Date[7],int place, int j){
 		printf("返せるmaybe\n");
 		for (int i = 0; i <= j; i++) {
 			if (turn == BLACK) {
-				if (Date[++i] == WHITE) {
+				if (Date[i] == WHITE) {
 					count++;
 					printf("//////////////BLACK///////////////////\n");
 					printf("%d\n",count);
@@ -272,9 +285,9 @@ void TurnOver(int Date[7],int place, int j){
 				}
 			}
 			else if (turn == WHITE) {
-				if (Date[++i] == BLACK) {
+				if (Date[i] == BLACK) {
 					count++;
-					printf("/////////////////////////////////\n");
+					printf("////////////////WHITE/////////////////\n");
 					printf("%d\n", count);
 					printf("/////////////////////////////////\n");
 				}
@@ -286,7 +299,7 @@ void TurnOver(int Date[7],int place, int j){
 				break;
 			}
 		}
-		printf("\n");
+		printf("%d\n",j);
 
 
 	}
@@ -344,6 +357,12 @@ void TurnOver(int Date[7],int place, int j){
 		sub_count = 0;
 		if (TurnFlag) {
 			printf("裏返せれません\n");
+		}
+		if (turn == BLACK) {
+			turn = WHITE;//ホワイトは後攻
+		}
+		else {
+			turn = BLACK;//ブラックは先攻
 		}
 		break;
 	default:
