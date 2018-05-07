@@ -27,6 +27,7 @@ static int WHITE_NUMBER = 2;	//”’‹î
 int FLAG = 1;					//Œp‘±”»’è 1:‘±s 0:I—¹
 int Date[7];					//— •Ô‚µ‚Ì”»’èÞ—¿ Ž©•ª‚ª‚¢‚éî•ñ‚Í–³Ž‹
 bool Turn_FLAG = false;			//‚Ç‚±‚©1—ñ‚Å‚à— •Ô‚¹‚é‚©‚Ì”»’è 1:‰Â 0:•s
+bool PassFlag = false;			//ƒpƒX‚ª‚Å‚«‚é‚©‚Ì”»’è 1:‰Â 0:•s
 static int y, x;				//À•W
 
 int turn = BLACK;				//1‚ªBLACKA2‚ªWHITE 
@@ -42,6 +43,7 @@ int FinishCheck(int BLACK_NUMBER,int WHITE_NUMBER,int NONE_NUMBER);		//ƒQ[ƒ€‚ª‘
 int main(void) {
 	while(FLAG){//Œp‘±”»’è
 		Disp();
+		PassCheck();
 		CanPut();
 	}
 	if (BLACK_NUMBER > WHITE_NUMBER) {//Ÿ—˜”»’è
@@ -61,7 +63,7 @@ void Disp() {
 	NONE_NUMBER = 0;	//‹ó‚«ƒ}ƒX
 	BLACK_NUMBER = 0;	//•‹î
 	WHITE_NUMBER = 0;	//”’‹î
-	system("cls");		//‰æ–ÊƒNƒŠƒA
+	//system("cls");		//‰æ–ÊƒNƒŠƒA
 	for (int i = 0; i < 9; i++) {		//Žü‚è‚É-1‚ð“ü‚ê‚Ä‰Šú‰»
 		board[i][8] = -1;
 		for (int j = 0; j < 9; j++) {
@@ -221,7 +223,18 @@ int CanPut_sub(int place) {
 
 //ƒpƒX”»’è@—¼•û‹î‚ÍŽc‚Á‚Ä‚¢‚é‚¯‚Ç’u‚¯‚È‚¢Žž‚Ìˆ—
 void PassCheck() {
-
+	int place = 0;
+	for (int i = 0; board[i][y] != -1;i++) {
+		for (int y = 0; board[i][y] != -1; y++) {
+			if (board[i][y] == turn) {
+				place = ((i + 1) * 10) + (y + 1);
+				//printf("%2d", place);
+				CanPut_sub(place);
+			}
+			//printf("%2d", board[i][y]);
+		}
+		//printf("\n");
+	}
 }
 
 //— •Ô‚·ˆ—
